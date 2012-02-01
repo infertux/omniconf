@@ -5,7 +5,7 @@ require "omniconf/version"
 Gem::Specification.new do |s|
   s.name        = "omniconf"
   s.version     = Omniconf::VERSION
-  s.authors     = ["Cédric Felizard"]
+  s.authors     = ["Cedric Felizard"]
   s.email       = ["cedric@picklive.com"]
   s.homepage    = "https://github.com/Picklive/omniconf"
   s.summary     = %q{Merge multiple configuration sources into one.}
