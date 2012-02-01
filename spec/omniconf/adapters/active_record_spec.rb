@@ -19,19 +19,29 @@ describe Omniconf::Adapter::ActiveRecord do
     @database.load_configuration!
   end
 
-  describe "#[]" do
-    it "returns configuration values from database" do
-      @database.configuration.foo.should == 'bar'
-      @database.configuration.foo2.should == 'bar2'
+  describe "#model" do
+    describe "#[]" do
+      it "returns configuration values from database" do
+        @database.model['foo'].should == 'bar'
+        @database.model['foo2'].should == 'bar2'
+      end
+
+      pending "it doesn't cast values to String" # TODO serialize them and keep type
     end
 
-    pending "it doesn't cast values to String" # TODO serialize them and keep type
-  end
+    describe "#[]=" do
+      it "sets configuration values into database" do
+        @database.model['foo3'].should be_nil
+        @database.model['foo3'] = 'bar3'
+        @database.model['foo3'].should == 'bar3'
+      end
+    end
 
-  describe "#get_or_default" do
-    it "sets default value if new" do
-      @database.model.get_or_default('newValue', 'a').should == 'a'
-      @database.model.get_or_default('newValue', 'b').should == 'a'
+    describe "#get_or_default" do
+      it "sets default value if new" do
+        @database.model.get_or_default('newValue', 'a').should == 'a'
+        @database.model.get_or_default('newValue', 'b').should == 'a'
+      end
     end
   end
 end
