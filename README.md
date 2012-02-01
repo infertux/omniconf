@@ -17,6 +17,18 @@ Configure and load desired backends by creating a new initializer `config/initia
       }
     end
 
+# Usage
+
+    $ rails c
+    > Omniconf.configuration.some_config_from_database # value from ConfigValue model
+    "abc"
+    > Omniconf.configuration_hash["some_config_from_database"] # if you prefer the hash way
+    "abc"
+    > Omniconf.configuration.some_config_from_yaml # value from config/settings.yml
+    123
+    > Omniconf.configuration.api.username # it works with nested values too
+    "root"
+
 ## Backend sources
 
 `:type` is the only required parameter.
