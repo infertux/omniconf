@@ -1,0 +1,6 @@
+*.gem
+*.swp
+*.sqlite3
+.bundle
+Gemfile.lock
+pkg/*

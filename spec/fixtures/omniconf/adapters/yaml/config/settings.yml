@@ -1,0 +1,8 @@
+development:
+  api:
+    username: user
+    password: pass
+test:
+  api:
+    username: test_user
+    password: test_password
