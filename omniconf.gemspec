@@ -18,10 +18,10 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
-  s.add_runtime_dependency "recursive-open-struct"
+  s.add_runtime_dependency 'recursive-open-struct', ['~> 0.2', '>= 0.2.2']
 
-  s.add_development_dependency "rake"
-  s.add_development_dependency "rspec"
-  s.add_development_dependency "sqlite3"
-  s.add_development_dependency "activerecord"
+  s.add_development_dependency 'rake', '~> 0.9'
+  s.add_development_dependency 'rspec', '~> 2.8'
+  s.add_development_dependency 'sqlite3', '~> 1.3'
+  s.add_development_dependency 'activerecord', '~> 3.2'
 end
