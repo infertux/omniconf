@@ -16,9 +16,16 @@ module Omniconf
 
       def load_configuration!
         setup
-
         @configuration_hash = {}
-        @model.all.map do |record|
+
+        begin
+          records = @model.all
+        rescue ::ActiveRecord::StatementInvalid => e
+          Omniconf.logger.warn "Could not load #{@params[:model_name]} model, ignoring this configuration source."
+          return
+        end
+
+        records.map do |record|
           @configuration_hash[record.key] = record.value
         end
         merge_configuration! @configuration_hash
