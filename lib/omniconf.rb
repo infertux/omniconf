@@ -51,7 +51,7 @@ module Omniconf
         params[:adapter] = Omniconf::Adapter.class_eval do
           const_get(adapter_class).new(params)
         end
-        Omniconf.logger.info "Registered #{adapter_class}::#{source_id} source"
+        Omniconf.logger.debug "Registered #{adapter_class}::#{source_id} source"
       end
     end
 
