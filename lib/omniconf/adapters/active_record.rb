@@ -7,10 +7,12 @@ module Omniconf
 
       def initialize params
         defaults = {
-          :model_name => :ConfigValue,
+          :model_name => :ConfigValue
+        }
+        defaults.merge!({
           :environment => Rails.env,
           :config_file => File.join(Rails.root, 'config/database.yml')
-        }
+        }) if defined? Rails
         @params = defaults.merge params
       end
 

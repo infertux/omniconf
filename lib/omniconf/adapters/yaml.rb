@@ -3,10 +3,11 @@ module Omniconf
     class Yaml < Base
 
       def initialize params
-        defaults = {
+        defaults = {}
+        defaults.merge!({
           :environment => Rails.env,
           :file => File.join(Rails.root, 'config/settings.yml')
-        }
+        }) if defined? Rails
         @params = defaults.merge params
       end
 
