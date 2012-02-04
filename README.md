@@ -1,4 +1,8 @@
-*THIS STUFF IS STILL ALPHA!*
+# Omniconf
+
+A _RubyGem_ that provides an application-agnostic configuration merger.
+
+*This stuff is still in beta!*
 
 # Setup
 
