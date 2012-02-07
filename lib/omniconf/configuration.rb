@@ -1,7 +1,7 @@
 require 'omniconf/blank_state'
 
 module Omniconf
-  class Configuration < BlankSlate
+  class Configuration < Omniconf::BlankSlate
     # XXX: Every method defined in this class overrides config value accessors,
     # hence it inherits from BlankSlate (and the gross 'method_missing')
 
