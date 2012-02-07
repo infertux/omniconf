@@ -35,6 +35,8 @@ $ rails c
 123
 > Omniconf.configuration.api.username # it works with nested values too
 "root"
+> Omniconf.configuration.api # outputs a hash if nested
+ => {"username"=>"root"}
 > Omniconf.configuration.non_existant.config_value # raises an exception
 Omniconf::UnknownConfigurationValue: cannot get a configuration value with no parent
 ```
@@ -94,6 +96,7 @@ Not yet implemented.
 /!\ You should not use these names as configuration keys:
 
 - `to_hash`: it's a helper which returns the configuration as a hash
+- `inspect`: outputs sub-values as a hash
 - `get_or_default`: it's a helper which returns the value if it exists or creates it otherwise (usage: `get_or_default(key, default_value)`)
 - `method_missing`: used internally
 - everything which starts with `__` (double underscore): used internally

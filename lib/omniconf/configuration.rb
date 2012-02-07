@@ -15,6 +15,10 @@ module Omniconf
       @__table
     end
 
+    def inspect
+      @__table.inspect
+    end
+
     def get_or_default(key, default)
       raise "key cannot be nested" if key.include? '.'
       __send__ :"#{key}=", default unless value = __send__(:"#{key}")
