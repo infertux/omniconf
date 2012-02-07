@@ -30,30 +30,30 @@ end
 ```ruby
 $ rails c
 > Omniconf.configuration.some_config_from_database # value from ConfigValue model
-"abc"
+ => "abc"
 > Omniconf.configuration.some_config_from_yaml # value from config/settings.yml
-123
+ => 123
 > Omniconf.configuration.api.username # it works with nested values too
-"root"
+ => "root"
 > Omniconf.configuration.api # outputs a hash if nested
  => {"username"=>"root"}
 > Omniconf.configuration.non_existant.config_value # raises an exception
-Omniconf::UnknownConfigurationValue: cannot get a configuration value with no parent
+ => Omniconf::UnknownConfigurationValue: cannot get a configuration value with no parent
 ```
 
 ## Setting values
 
 ```ruby
 > Omniconf.configuration.some_config_from_database = "def" # updates value in DB using ConfigValue model
-"def"
+ => "def"
 > Omniconf.configuration.some_config_from_yaml = 456 # raises an exception because the value comes from YAML - who would want to update a YAML file?!
-Omniconf::ReadOnlyConfigurationValue: cannot set 'some_config_from_yaml' because it belongs to a read-only back-end source (id: :yaml_config, type: Yaml)
+ => Omniconf::ReadOnlyConfigurationValue: cannot set 'some_config_from_yaml' because it belongs to a read-only back-end source (id: :yaml_config, type: Yaml)
 > Omniconf.configuration.api.username = "admin" # it works with nested values too
-"admin"
+ => "admin"
 > Omniconf.configuration.brand_new_value = "whatever" # raises an exception because you've got to tell which back-end will store the new value
-Omniconf::UnknownConfigurationValue: cannot set a configuration value with no parent
+ => Omniconf::UnknownConfigurationValue: cannot set a configuration value with no parent
 > Omniconf.sources[:database_config].brand_new_value = "whatever" # adds a new row in ConfigValue model
-"whatever"
+ => "whatever"
 ```
 
 ## Back-end sources
