@@ -57,7 +57,7 @@ module Omniconf
           Omniconf.merge_configuration! @__adapter.source_id
         end
 
-      elsif len == 0 # dotted read
+      elsif len == 0 # read
         key = method.to_s
         value = @__table[key]
         if value.is_a?(Hash)
