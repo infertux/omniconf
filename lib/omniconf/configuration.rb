@@ -37,8 +37,6 @@ module Omniconf
           raise ArgumentError, "wrong number of arguments (#{len} for 1)"
         end
 
-        key = key.to_s # stringify keys
-
         if @__adapter # should not be nil expect for testing purposes
           # update the actual source data (e.g. does the SQL query)
           full_key, parent = [key], @__parent
