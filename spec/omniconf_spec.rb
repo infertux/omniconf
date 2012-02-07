@@ -76,14 +76,14 @@ describe Omniconf do
         end
 
         it "creates a new value on the given source" do
-          config.new.should be_nil
+          config.new_value.should be_nil
           db_adapter = Omniconf.settings.sources[:database][:adapter]
-          db_adapter.should_receive(:set_value).with(['new'], 'new_ar_value')
+          db_adapter.should_receive(:set_value).with(['new_value'], 'new_ar_value')
 
-          Omniconf.sources[:database].new = 'new_ar_value'
+          Omniconf.sources[:database].new_value = 'new_ar_value'
 
-          Omniconf.sources[:database].new.should == 'new_ar_value'
-          config.new.should == 'new_ar_value'
+          Omniconf.sources[:database].new_value.should == 'new_ar_value'
+          config.new_value.should == 'new_ar_value'
         end
 
         it "fails to create a new value with no sources" do
