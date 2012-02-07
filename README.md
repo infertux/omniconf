@@ -25,6 +25,8 @@ end
 
 # Usage
 
+## Getting values
+
 ```ruby
 $ rails c
 > Omniconf.configuration.some_config_from_database # value from ConfigValue model
@@ -35,16 +37,35 @@ $ rails c
 123
 > Omniconf.configuration.api.username # it works with nested values too
 "root"
+> Omniconf.configuration.non_existant.config_value # raises an exception
+Omniconf::UnknownConfigurationValue: cannot get a configuration value with no parent
 ```
 
-## Backend sources
+## Setting values
+
+```ruby
+> Omniconf.configuration.some_config_from_database = "def" # updates value in DB using ConfigValue model
+"def"
+> Omniconf.configuration_hash["some_config_from_database"] = "def" # if you prefer the hash way
+"def"
+> Omniconf.configuration.some_config_from_yaml = 456 # raises an exception because the value comes from YAML _(Who would want to update a YAML file?!)_
+Omniconf::ReadOnlyConfigurationValue: cannot set 'some_config_from_yaml' because it belongs to a read-only back-end source (id: :yaml_config, type: Yaml)
+> Omniconf.configuration.api.username = "admin" # it works with nested values too
+"admin"
+> Omniconf.configuration.brand_new_value = "whatever" # raises an exception because you've got to tell which back-end will store the new value
+Omniconf::UnknownConfigurationValue: cannot set a configuration value with no parent
+> Omniconf.sources[:database_config].brand_new_value = "whatever" # adds a new row in ConfigValue model
+"whatever"
+```
+
+## Back-end sources
 
 `:type` is the only required parameter.
 Other parameters default to standard values for Rails.
 
 ### Yaml
 
-Nothing to configure apart from a YAML file.
+Nothing to configure apart from having a YAML file.
 
 _Note: read-only._
 
