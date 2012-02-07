@@ -31,8 +31,6 @@ end
 $ rails c
 > Omniconf.configuration.some_config_from_database # value from ConfigValue model
 "abc"
-> Omniconf.configuration["some_config_from_database"] # if you prefer the hash way
-"abc"
 > Omniconf.configuration.some_config_from_yaml # value from config/settings.yml
 123
 > Omniconf.configuration.api.username # it works with nested values too
@@ -45,8 +43,6 @@ Omniconf::UnknownConfigurationValue: cannot get a configuration value with no pa
 
 ```ruby
 > Omniconf.configuration.some_config_from_database = "def" # updates value in DB using ConfigValue model
-"def"
-> Omniconf.configuration["some_config_from_database"] = "def" # if you prefer the hash way
 "def"
 > Omniconf.configuration.some_config_from_yaml = 456 # raises an exception because the value comes from YAML - who would want to update a YAML file?!
 Omniconf::ReadOnlyConfigurationValue: cannot set 'some_config_from_yaml' because it belongs to a read-only back-end source (id: :yaml_config, type: Yaml)
