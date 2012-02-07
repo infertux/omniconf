@@ -3,9 +3,8 @@ require 'active_record'
 module Omniconf
   module Adapter
     class ActiveRecord < Base
-      attr_reader :model
-
-      def initialize params
+      def initialize id, params
+        @source_id = id
         defaults = {
           :model_name => :ConfigValue
         }
@@ -18,7 +17,9 @@ module Omniconf
 
       def load_configuration!
         setup
-        @configuration_hash = {}
+
+        # create an empty config in case ActiveRecord raises
+        @configuration = Configuration.new self
 
         begin
           records = @model.all
@@ -27,13 +28,32 @@ module Omniconf
           return
         end
 
+        # build the configuration hash from DB (nesting on dots)
+        hash = {}
         records.map do |record|
-          @configuration_hash[record.key] = record.value
+          key, value = record.key.split('.'), record.value
+          el = key[0..-2].inject(hash) {|r,e| r[e] ||= {} }
+          raise unless el[key.last].nil?
+          el[key.last] = value
         end
-        merge_configuration! @configuration_hash
+        @configuration = Configuration.new self, hash
+
+        Omniconf.merge_configuration! @source_id
+      end
+
+      def set_value(key, value)
+        key = key.join('.')
+        if item = @model.find_by_key(key)
+          item.value = value
+        else
+          item = @model.new(:key => key, :value => value)
+        end
+        item.save!
+        item.value
       end
 
       def setup
+        # define the ActiveRecord model if missing
         unless Object.const_defined? @params[:model_name]
           unless ::ActiveRecord::Base.connected?
             ::ActiveRecord::Base.configurations = YAML::load(IO.read(@params[:config_file]))
@@ -42,32 +62,6 @@ module Omniconf
 
           klass = Class.new ::ActiveRecord::Base do
             validates_uniqueness_of :key
-
-            def self.[]=(key, value)
-              if item = self.find_by_key(key.to_s)
-                item.value = value.to_s
-              else
-                item = self.new(:key => key.to_s, :value => value.to_s)
-              end
-              item.save!
-              item.value
-            end
-
-            def self.[](key)
-              if item = find_by_key(key.to_s)
-                return item.value
-              end
-            end
-
-            def self.get_or_default(key, default)
-              if item = find_by_key(key.to_s)
-                return item.value
-              else
-                self[key] = default
-                return default
-              end
-            end
-
           end
 
           Object.const_set @params[:model_name], klass

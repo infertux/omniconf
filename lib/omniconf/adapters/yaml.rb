@@ -1,8 +1,12 @@
+require 'omniconf/adapters/read_only'
+
 module Omniconf
   module Adapter
     class Yaml < Base
+      include ReadOnly
 
-      def initialize params
+      def initialize id, params
+        @source_id = id
         defaults = {}
         defaults.merge!({
           :environment => Rails.env,
@@ -12,11 +16,11 @@ module Omniconf
       end
 
       def load_configuration!
-        yaml = ::YAML.load_file(@params[:file])
-        @configuration_hash = yaml[@params[:environment]]
-        merge_configuration! @configuration_hash
-      end
+        yaml = ::YAML.load_file(@params[:file])[@params[:environment]]
+        @configuration = Omniconf::Configuration.new(self, yaml)
 
+        Omniconf.merge_configuration! @source_id
+      end
     end
   end
 end

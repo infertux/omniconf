@@ -1,3 +1,9 @@
-require 'lib/omniconf/adapters/base'
-require 'spec/support/mock'
+require 'omniconf'
+
+Omniconf.setup do |config|
+  config.load_configuration = false
+  config.logger_level = Logger::ERROR # don't pollute specs output
+end
+
+require 'omniconf/adapters/base'
 

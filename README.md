@@ -31,7 +31,7 @@ end
 $ rails c
 > Omniconf.configuration.some_config_from_database # value from ConfigValue model
 "abc"
-> Omniconf.configuration_hash["some_config_from_database"] # if you prefer the hash way
+> Omniconf.configuration["some_config_from_database"] # if you prefer the hash way
 "abc"
 > Omniconf.configuration.some_config_from_yaml # value from config/settings.yml
 123
@@ -46,9 +46,9 @@ Omniconf::UnknownConfigurationValue: cannot get a configuration value with no pa
 ```ruby
 > Omniconf.configuration.some_config_from_database = "def" # updates value in DB using ConfigValue model
 "def"
-> Omniconf.configuration_hash["some_config_from_database"] = "def" # if you prefer the hash way
+> Omniconf.configuration["some_config_from_database"] = "def" # if you prefer the hash way
 "def"
-> Omniconf.configuration.some_config_from_yaml = 456 # raises an exception because the value comes from YAML _(Who would want to update a YAML file?!)_
+> Omniconf.configuration.some_config_from_yaml = 456 # raises an exception because the value comes from YAML - who would want to update a YAML file?!
 Omniconf::ReadOnlyConfigurationValue: cannot set 'some_config_from_yaml' because it belongs to a read-only back-end source (id: :yaml_config, type: Yaml)
 > Omniconf.configuration.api.username = "admin" # it works with nested values too
 "admin"
@@ -92,6 +92,15 @@ end
 Add `gem 'redis'` in your `Gemfile`.
 
 Not yet implemented.
+
+## Reserved words
+
+/!\ You should not use these names as configuration keys:
+
+- `to_hash`: it's a helper which returns the configuration as a hash
+- `get_or_default`: it's a helper which returns the value if it exists or creates it otherwise (usage: `get_or_default(key, default_value)`)
+- `method_missing`: used internally
+- everything which starts with `__` (double underscore): used internally
 
 # Testing
 
