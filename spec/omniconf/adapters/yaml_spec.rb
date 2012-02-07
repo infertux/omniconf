@@ -20,94 +20,43 @@ describe Omniconf::Adapter::Yaml do
 
     let(:configuration) { @adapter.configuration }
 
-    describe "using the object way (dotted notation)" do
-      describe "getting values" do
-        it "returns a value" do
-          configuration.yaml_key.should == 'yaml_value'
-        end
-
-        it "returns a nested value" do
-          configuration.nested.yaml_key.should == 'nested_yaml_value'
-        end
+    describe "getting values" do
+      it "returns a value" do
+        configuration.yaml_key.should == 'yaml_value'
       end
 
-      describe "setting values" do
-        it "fails to update a value" do
-          configuration.yaml_key.should_not be_nil
-          expect {
-            configuration.yaml_key = 'whatever'
-          }.to raise_error Omniconf::ReadOnlyConfigurationValue
-        end
-
-        it "fails to update a nested value" do
-          configuration.nested.yaml_key.should_not be_nil
-          expect {
-            configuration.nested.yaml_key = 'whatever'
-          }.to raise_error Omniconf::ReadOnlyConfigurationValue
-        end
-
-        it "fails to create a value" do
-          configuration.new_yaml_key.should be_nil
-          expect {
-            configuration.new_yaml_key = 'whatever'
-          }.to raise_error Omniconf::ReadOnlyConfigurationValue
-        end
-
-        it "fails to create a nested value" do
-          configuration.nested.new_yaml_key.should be_nil
-          expect {
-            configuration.nested.new_yaml_key = 'whatever'
-          }.to raise_error Omniconf::ReadOnlyConfigurationValue
-        end
+      it "returns a nested value" do
+        configuration.nested.yaml_key.should == 'nested_yaml_value'
       end
     end
 
-    describe "using the hash way (bracket notation)" do
-      describe "getting values" do
-        it "returns a value" do
-          configuration['yaml_key'].should == 'yaml_value'
-        end
-
-        it "returns a nested value" do
-          configuration['nested']['yaml_key'].should == 'nested_yaml_value'
-        end
+    describe "setting values" do
+      it "fails to update a value" do
+        configuration.yaml_key.should_not be_nil
+        expect {
+          configuration.yaml_key = 'whatever'
+        }.to raise_error Omniconf::ReadOnlyConfigurationValue
       end
 
-      describe "setting values" do
-        it "fails to update a value" do
-          configuration['yaml_key'].should_not be_nil
-          configuration['yaml_key'].should_not == 'whatever'
-          expect {
-            configuration['yaml_key'] = 'whatever'
-          }.to raise_error Omniconf::ReadOnlyConfigurationValue
-          configuration['yaml_key'].should_not == 'whatever'
-        end
+      it "fails to update a nested value" do
+        configuration.nested.yaml_key.should_not be_nil
+        expect {
+          configuration.nested.yaml_key = 'whatever'
+        }.to raise_error Omniconf::ReadOnlyConfigurationValue
+      end
 
-        it "fails to update a nested value" do
-          configuration['nested']['yaml_key'].should_not be_nil
-          configuration['nested']['yaml_key'].should_not == 'whatever'
-          expect {
-            configuration['nested']['yaml_key'] = 'whatever'
-          }.to raise_error Omniconf::ReadOnlyConfigurationValue
-          configuration['nested']['yaml_key'].should_not == 'whatever'
-        end
+      it "fails to create a value" do
+        configuration.new_yaml_key.should be_nil
+        expect {
+          configuration.new_yaml_key = 'whatever'
+        }.to raise_error Omniconf::ReadOnlyConfigurationValue
+      end
 
-        it "fails to create a value" do
-          configuration['new_yaml_key'].should be_nil
-          expect {
-            configuration['new_yaml_key'] = 'whatever'
-          }.to raise_error Omniconf::ReadOnlyConfigurationValue
-          configuration['new_yaml_key'].should be_nil
-        end
-
-        it "fails to create a nested value" do
-          configuration['nested']['new_yaml_key'].should be_nil
-          configuration['nested']['new_yaml_key'] = 'df'
-          expect {
-            configuration['nested']['new_yaml_key'] = 'whatever'
-          }.to raise_error Omniconf::ReadOnlyConfigurationValue
-          configuration['nested']['new_yaml_key'].should be_nil
-        end
+      it "fails to create a nested value" do
+        configuration.nested.new_yaml_key.should be_nil
+        expect {
+          configuration.nested.new_yaml_key = 'whatever'
+        }.to raise_error Omniconf::ReadOnlyConfigurationValue
       end
     end
 

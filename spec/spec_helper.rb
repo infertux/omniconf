@@ -5,5 +5,3 @@ Omniconf.setup do |config|
   config.logger_level = Logger::ERROR # don't pollute specs output
 end
 
-require 'omniconf/adapters/base'
-

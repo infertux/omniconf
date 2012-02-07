@@ -28,118 +28,59 @@ describe Omniconf::Configuration do
       @config = Omniconf::Configuration.new nil, hash
     end
 
-    describe "using the object way (dotted notation)" do
-      describe "getting values" do
-        it "returns a value" do
-          @config.key.should == 'level0'
-        end
-
-        it "returns a nested value" do
-          @config.nested0.key.should == 'level1'
-          @config.nested0.nested1.nested2.answer.should == 42
-        end
-
-        it "#nil? returns true for non-existant values" do
-          @config.nope_404.should be_nil
-        end
-
-        it "is false when a non-existant value is coerced to a boolean" do
-          (!!(@config.nope_404)).should == false
-          (@config.nope_404 ? true : false).should == false
-        end
+    describe "getting values" do
+      it "returns a value" do
+        @config.key.should == 'level0'
       end
 
-      describe "setting values" do
-        it "updates a value" do
-          @config.key.should_not == 'new_level0'
-          @config.key = 'new_level0'
-          @config.key.should == 'new_level0'
-        end
+      it "returns a nested value" do
+        @config.nested0.key.should == 'level1'
+        @config.nested0.nested1.nested2.answer.should == 42
+      end
 
-        it "creates a new value" do
-          @config.key2.should be_nil
-          @config.key2 = 'new_value'
-          @config.key2.should == 'new_value'
-        end
+      it "#nil? returns true for non-existant values" do
+        @config.nope_404.should be_nil
+      end
 
-        it "updates a nested value" do
-          @config.to_hash.should == hash
-          @config.nested0.nested1.key.should_not == :new
-          @config.nested0.nested1.key = :new
-          @config.nested0.nested1.key.should == :new
-          expected = hash
-          expected['nested0']['nested1']['key'] = :new
-          @config.to_hash.should == expected
-        end
-
-        it "creates a new nested value" do
-          @config.to_hash.should == hash
-          @config.nested0.new.should be_nil
-          @config.nested0.new = 'new_value'
-          @config.nested0.new.should == 'new_value'
-          expected = hash
-          expected['nested0']['new'] = 'new_value'
-          @config.to_hash.should == expected
-        end
+      it "is false when a non-existant value is coerced to a boolean" do
+        (!!(@config.nope_404)).should == false
+        (@config.nope_404 ? true : false).should == false
       end
     end
 
-    describe "using the hash way (bracket notation)" do
-      describe "getting values" do
-        it "returns a value" do
-          @config['key'].should == 'level0'
-        end
-
-        it "returns a nested value" do
-          @config['nested0']['key'].should == 'level1'
-          @config['nested0']['nested1']['nested2']['answer'].should == 42
-        end
-
-        it "#nil? returns true for non-existant values" do
-          @config['nope_404'].should be_nil
-        end
-
-        it "is false when a non-existant value is coerced to a boolean" do
-          (!!(@config['nope_404'])).should == false
-          (@config['nope_404'] ? true : false).should == false
-        end
+    describe "setting values" do
+      it "updates a value" do
+        @config.key.should_not == 'new_level0'
+        @config.key = 'new_level0'
+        @config.key.should == 'new_level0'
       end
 
-      describe "setting values" do
-        it "updates a value" do
-          @config['key'].should_not == 'new_level0'
-          @config['key'] = 'new_level0'
-          @config['key'].should == 'new_level0'
-        end
+      it "creates a new value" do
+        @config.key2.should be_nil
+        @config.key2 = 'new_value'
+        @config.key2.should == 'new_value'
+      end
 
-        it "creates a new value" do
-          @config['key2'].should be_nil
-          @config['key2'] = 'new_value'
-          @config['key2'].should == 'new_value'
-        end
+      it "updates a nested value" do
+        @config.to_hash.should == hash
+        @config.nested0.nested1.key.should_not == :new
+        @config.nested0.nested1.key = :new
+        @config.nested0.nested1.key.should == :new
+        expected = hash
+        expected['nested0']['nested1']['key'] = :new
+        @config.to_hash.should == expected
+      end
 
-        it "updates a nested value" do
-          @config.to_hash.should == hash
-          @config['nested0']['nested1']['key'].should_not == :new
-          @config['nested0']['nested1']['key'] = :new
-          @config['nested0']['nested1']['key'].should == :new
-          expected = hash
-          expected['nested0']['nested1']['key'] = :new
-          @config.to_hash.should == expected
-        end
-
-        it "creates a new nested value" do
-          @config.to_hash.should == hash
-          @config['nested0']['new'].should be_nil
-          @config['nested0']['new'] = 'new_value'
-          @config['nested0']['new'].should == 'new_value'
-          expected = hash
-          expected['nested0']['new'] = 'new_value'
-          @config.to_hash.should == expected
-        end
+      it "creates a new nested value" do
+        @config.to_hash.should == hash
+        @config.nested0.new.should be_nil
+        @config.nested0.new = 'new_value'
+        @config.nested0.new.should == 'new_value'
+        expected = hash
+        expected['nested0']['new'] = 'new_value'
+        @config.to_hash.should == expected
       end
     end
   end
-
 end
 

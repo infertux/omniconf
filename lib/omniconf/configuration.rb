@@ -27,14 +27,12 @@ module Omniconf
 
       len = args.length
       if new_key = method.to_s.chomp!('=') # write
-        case len
-          when 1 # dotted write
-            key, value = new_key, args[0]
-          when 2 # bracket write
-            key, value = args[0], args[1]
-          else raise ArgumentError,
-                     "wrong number of arguments (#{len} for 1 or 2)"
+        if len == 1
+          key, value = new_key, args[0]
+        else
+          raise ArgumentError, "wrong number of arguments (#{len} for 1)"
         end
+
         key = key.to_s # stringify keys
 
         if @__adapter # should not be nil expect for testing purposes
@@ -75,9 +73,6 @@ module Omniconf
           end
           value
         end
-
-      elsif method == :[] && len == 1 # bracket read
-        @__table[args[0].to_s]
 
       else
         raise NoMethodError, "undefined method `#{method}' for #{self}"

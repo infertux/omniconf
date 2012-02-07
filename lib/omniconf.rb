@@ -3,6 +3,7 @@ require 'omniconf/version'
 require 'omniconf/helpers'
 require 'omniconf/errors'
 require 'omniconf/settings'
+require 'omniconf/adapters/base'
 
 module Omniconf
   class << self

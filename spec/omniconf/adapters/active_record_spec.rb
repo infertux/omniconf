@@ -28,58 +28,30 @@ describe Omniconf::Adapter::ActiveRecord do
 
     let(:configuration) { @adapter.configuration }
 
-    describe "using the object way (dotted notation)" do
-      describe "getting values" do
-        it "returns a value" do
-          configuration.ar_key.should == 'ar_value'
-        end
-
-        it "returns a nested value" do
-          configuration.nested.ar_key.should == 'nested_ar_value'
-        end
+    describe "getting values" do
+      it "returns a value" do
+        configuration.ar_key.should == 'ar_value'
       end
 
-      describe "setting values" do
-        it "updates configuration values into database" do
-          configuration.ar_key.should == 'ar_value'
-          configuration.ar_key = 'new_ar_value'
-          configuration.ar_key.should == 'new_ar_value'
-        end
-
-        it "creates configuration values into database" do
-          configuration.new_ar_key.should be_nil
-          configuration.new_ar_key = 'new_ar_value'
-          configuration.new_ar_key.should == 'new_ar_value'
-        end
+      it "returns a nested value" do
+        configuration.nested.ar_key.should == 'nested_ar_value'
       end
     end
 
-    describe "using the hash way (brackets notation)" do
-      describe "getting values" do
-        it "returns a value" do
-          configuration['ar_key'].should == 'ar_value'
-        end
-
-        it "returns a nested value" do
-          configuration['nested']['ar_key'].should == 'nested_ar_value'
-        end
+    describe "setting values" do
+      it "updates configuration values into database" do
+        configuration.ar_key.should == 'ar_value'
+        configuration.ar_key = 'new_ar_value'
+        configuration.ar_key.should == 'new_ar_value'
       end
 
-      describe "setting values" do
-        it "updates a value" do
-          configuration['ar_key'].should == 'ar_value'
-          configuration['ar_key'] = 'new_ar_value'
-          configuration['ar_key'].should == 'new_ar_value'
-        end
-
-        it "creates a value" do
-          configuration['new_ar_key'].should be_nil
-          configuration['new_ar_key'] = 'new_ar_value'
-          configuration['new_ar_key'].should == 'new_ar_value'
-        end
-
-        it "it doesn't cast values to String" # TODO serialize them and keep type
+      it "creates configuration values into database" do
+        configuration.new_ar_key.should be_nil
+        configuration.new_ar_key = 'new_ar_value'
+        configuration.new_ar_key.should == 'new_ar_value'
       end
+
+      it "it doesn't cast values to String" # TODO serialize them and keep type
     end
 
     describe "#get_or_default" do
