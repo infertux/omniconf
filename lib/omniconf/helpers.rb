@@ -10,16 +10,12 @@ class Hash
 
   def recursive_merge! with_hash
     self.merge!(with_hash) do |key, old_val, new_val|
-      return if new_val == old_val
-      # XXX This should never happen according to the documentation but for some
-      # reason, it does sometimes and outputs false-positive warnings.
-
-      if new_val.is_a?(Hash) && old_val.is_a?(Hash)
+      if new_val.is_a?(Hash) and old_val.is_a?(Hash)
         # merge sub-hashes together
         new_val = old_val.recursive_merge! new_val
       else
         # yield block when overriding
-        yield key, old_val, new_val if block_given?
+        yield key, old_val, new_val if block_given? and new_val != old_val
       end
       new_val
     end
