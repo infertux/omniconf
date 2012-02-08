@@ -103,7 +103,7 @@ Not yet implemented.
 
 `rake`
 
-Tested against _ree_, _ruby-1.9.3_ and _ruby-head_.
+Tested against _ree_, _ruby-1.9.2_ and _ruby-1.9.3_.
 
 # License
 
