@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.email       = ["cedric@picklive.com"]
   s.homepage    = "https://github.com/Picklive/omniconf"
   s.summary     = %q{Merge multiple configuration sources into one.}
-  s.description = %q{Merge configurations from multiple backends for easy use in a complex application.}
+  s.description = %q{Merge configurations from multiple back-ends for easy use in a complex application.}
 
   s.rubyforge_project = "omniconf"
 
