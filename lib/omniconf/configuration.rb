@@ -67,9 +67,14 @@ module Omniconf
             # add a catch-all exception
             # (more descriptive than "undefined method `xxx' for nil:NilClass")
             class << value
-              def method_missing *args
-                raise UnknownConfigurationValue,
-                      "cannot get a configuration value with no parent"
+              def method_missing method, *args
+                if method == :to_str
+                  # need to raise NoMethodError here for Ruby 1.9.2 compatibility
+                  raise NoMethodError, "undefined method `#{method}' for #{self}"
+                else
+                  raise UnknownConfigurationValue,
+                        "cannot get a configuration value with no parent"
+                end
               end
             end
           end
