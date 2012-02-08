@@ -62,6 +62,7 @@ module Omniconf
 
           klass = Class.new ::ActiveRecord::Base do
             validates_uniqueness_of :key
+            serialize :value
           end
 
           Object.const_set @params[:model_name], klass

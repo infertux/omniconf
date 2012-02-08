@@ -21,53 +21,66 @@ describe Omniconf::Adapter::ActiveRecord do
   end
 
   describe "#configuration" do
+    def config
+      @adapter.configuration
+    end
+
     before do
       Omniconf.stub(:merge_configuration!)
       load_configuration
     end
 
-    let(:configuration) { @adapter.configuration }
-
     describe "getting values" do
       it "returns a value" do
-        configuration.ar_key.should == 'ar_value'
+        config.ar_key.should == 'ar_value'
       end
 
       it "returns a nested value" do
-        configuration.nested.ar_key.should == 'nested_ar_value'
+        config.nested.ar_key.should == 'nested_ar_value'
       end
     end
 
     describe "setting values" do
-      it "updates configuration values into database" do
-        configuration.ar_key.should == 'ar_value'
-        configuration.ar_key = 'new_ar_value'
-        configuration.ar_key.should == 'new_ar_value'
+      it "updates config values into database" do
+        config.ar_key.should == 'ar_value'
+        config.ar_key = 'new_ar_value'
+        config.ar_key.should == 'new_ar_value'
       end
 
-      it "creates configuration values into database" do
-        configuration.new_ar_key.should be_nil
-        configuration.new_ar_key = 'new_ar_value'
-        configuration.new_ar_key.should == 'new_ar_value'
+      it "creates config values into database" do
+        config.new_ar_key.should be_nil
+        config.new_ar_key = 'new_ar_value'
+        config.new_ar_key.should == 'new_ar_value'
       end
-
-      it "it doesn't cast values to String" # TODO serialize them and keep type
     end
 
     describe "#get_or_default" do
       it "creates a new default value" do
-        configuration.newValue.should be_nil
+        config.newValue.should be_nil
         @adapter.should_receive(:set_value).with(['newValue'], 'a')
-        configuration.get_or_default('newValue', 'a').should == 'a'
-        configuration.get_or_default('newValue', 'b').should == 'a'
+        config.get_or_default('newValue', 'a').should == 'a'
+        config.get_or_default('newValue', 'b').should == 'a'
       end
 
       it "creates a new default nested value" do
-        configuration.nested.newValue.should be_nil
+        config.nested.newValue.should be_nil
         @adapter.should_receive(:set_value).with(['nested', 'newValue'], 'a')
-        configuration.nested.get_or_default('newValue', 'a').should == 'a'
-        configuration.nested.get_or_default('newValue', 'b').should == 'a'
+        config.nested.get_or_default('newValue', 'a').should == 'a'
+        config.nested.get_or_default('newValue', 'b').should == 'a'
       end
+    end
+
+    it "keeps value types" do
+      config.some_integer.should be_nil
+      config.some_float.should be_nil
+      config.some_array.should be_nil
+      config.some_integer = 1337
+      config.some_float = 3.14
+      config.some_array = [1, 2, 3]
+      @adapter.reload_configuration!
+      config.some_integer.should == 1337
+      config.some_float.should == 3.14
+      config.some_array.should == [1, 2, 3]
     end
   end
 end

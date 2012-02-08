@@ -3,5 +3,8 @@ test:
   nested:
     yaml_key: nested_yaml_value
     overridden: by_yaml
+  some_integer: 1337
+  some_float: 3.14
+  some_array: [1, 2, 3]
 development:
   yaml_key: yaml_value_dev

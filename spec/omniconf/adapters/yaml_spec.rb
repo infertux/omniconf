@@ -12,75 +12,84 @@ describe Omniconf::Adapter::Yaml do
     @adapter.load_configuration!
   end
 
+
   describe "#configuration" do
+    def config
+      @adapter.configuration
+    end
+
     before do
       Omniconf.stub(:merge_configuration!)
       load_configuration('test')
     end
 
-    let(:configuration) { @adapter.configuration }
-
     describe "getting values" do
       it "returns a value" do
-        configuration.yaml_key.should == 'yaml_value'
+        config.yaml_key.should == 'yaml_value'
       end
 
       it "returns a nested value" do
-        configuration.nested.yaml_key.should == 'nested_yaml_value'
+        config.nested.yaml_key.should == 'nested_yaml_value'
       end
     end
 
     describe "setting values" do
       it "fails to update a value" do
-        configuration.yaml_key.should_not be_nil
+        config.yaml_key.should_not be_nil
         expect {
-          configuration.yaml_key = 'whatever'
+          config.yaml_key = 'whatever'
         }.to raise_error Omniconf::ReadOnlyConfigurationValue
       end
 
       it "fails to update a nested value" do
-        configuration.nested.yaml_key.should_not be_nil
+        config.nested.yaml_key.should_not be_nil
         expect {
-          configuration.nested.yaml_key = 'whatever'
+          config.nested.yaml_key = 'whatever'
         }.to raise_error Omniconf::ReadOnlyConfigurationValue
       end
 
       it "fails to create a value" do
-        configuration.new_yaml_key.should be_nil
+        config.new_yaml_key.should be_nil
         expect {
-          configuration.new_yaml_key = 'whatever'
+          config.new_yaml_key = 'whatever'
         }.to raise_error Omniconf::ReadOnlyConfigurationValue
       end
 
       it "fails to create a nested value" do
-        configuration.nested.new_yaml_key.should be_nil
+        config.nested.new_yaml_key.should be_nil
         expect {
-          configuration.nested.new_yaml_key = 'whatever'
+          config.nested.new_yaml_key = 'whatever'
         }.to raise_error Omniconf::ReadOnlyConfigurationValue
       end
     end
 
     describe "#get_or_default" do
       it "fails to create a new default value" do
-        configuration.newValue.should be_nil
+        config.newValue.should be_nil
         expect {
-          configuration.get_or_default('newValue', 'a').should == 'a'
+          config.get_or_default('newValue', 'a').should == 'a'
         }.to raise_error Omniconf::ReadOnlyConfigurationValue
-        configuration.newValue.should be_nil
+        config.newValue.should be_nil
       end
 
       it "fails to create a new nested default value" do
-        configuration.nested.newValue.should be_nil
+        config.nested.newValue.should be_nil
         expect {
-          configuration.nested.get_or_default('newValue', 'a').should == 'a'
+          config.nested.get_or_default('newValue', 'a').should == 'a'
         }.to raise_error Omniconf::ReadOnlyConfigurationValue
-        configuration.nested.newValue.should be_nil
+        config.nested.newValue.should be_nil
       end
     end
 
     it "loads the right environment" do
       load_configuration 'development'
-      configuration.yaml_key.should == 'yaml_value_dev'
+      config.yaml_key.should == 'yaml_value_dev'
+    end
+
+    it "keeps value types" do
+      config.some_integer.should == 1337
+      config.some_float.should == 3.14
+      config.some_array.should == [1, 2, 3]
     end
   end
 end

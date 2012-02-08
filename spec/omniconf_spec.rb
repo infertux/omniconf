@@ -49,7 +49,9 @@ describe Omniconf do
     end
 
     describe "#configuration" do
-      let(:config) { Omniconf.configuration }
+      def config
+        Omniconf.configuration
+      end
 
       it "returns an instance of Omniconf::Configuration" do
         config.should be_an_instance_of Omniconf::Configuration
