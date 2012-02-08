@@ -1,8 +1,6 @@
-# Omniconf
+# Omniconf [![Build Status](https://secure.travis-ci.org/Picklive/omniconf.png)](http://travis-ci.org/#!/Picklive/omniconf)
 
 A _RubyGem_ that provides an application-agnostic configuration merger.
-
-*This stuff is still in beta!*
 
 # Setup
 
