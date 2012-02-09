@@ -4,18 +4,18 @@ A _RubyGem_ that provides an application-agnostic configuration merger.
 
 # Setup
 
-Configure and load desired backends by creating a new initializer `config/initializers/omniconf.rb`:
+Configure and load desired back-ends by creating a new initializer `config/initializers/omniconf.rb`:
 
 ```ruby
 Omniconf.setup do |config|
   config.sources = {
-    :yaml_config => {
+    :yaml => {
       :type => :yaml,
       :file => "config/settings.yml"
     },
-    :database_config => {
+    :database => {
       :type => :active_record,
-      :model_name => :ConfigValue
+      :model => "ConfigValue"
     }
   }
 end
@@ -44,13 +44,13 @@ $ rails c
 ```ruby
 > Omniconf.configuration.some_config_from_database = "def" # updates value in DB using ConfigValue model
  => "def"
-> Omniconf.configuration.some_config_from_yaml = 456 # raises an exception because the value comes from YAML - who would want to update a YAML file?!
- => Omniconf::ReadOnlyConfigurationValue: cannot set 'some_config_from_yaml' because it belongs to a read-only back-end source (id: :yaml_config, type: Yaml)
+> Omniconf.configuration.some_config_from_yaml = 456 # raises an exception because the value comes from YAML
+ => Omniconf::ReadOnlyConfigurationValue: cannot set 'some_config_from_yaml' because it belongs to a read-only back-end source (id: :yaml, type: Yaml)
 > Omniconf.configuration.api.username = "admin" # it works with nested values too
  => "admin"
 > Omniconf.configuration.brand_new_value = "whatever" # raises an exception because you've got to tell which back-end will store the new value
  => Omniconf::UnknownConfigurationValue: cannot set a configuration value with no parent
-> Omniconf.sources[:database_config].brand_new_value = "whatever" # adds a new row in ConfigValue model
+> Omniconf.sources[:database].brand_new_value = "whatever" # adds a new record in ConfigValue model
  => "whatever"
 ```
 
@@ -61,16 +61,20 @@ Other parameters default to standard values for Rails.
 
 ### Yaml
 
-Nothing to configure apart from having a YAML file.
-
 _Note: read-only._
+
+#### Parameters
+
+- `:type => :yaml`
+- `:file`: path to the YAML file to load (default: `config/settings.yml`)
+- `:environment`: the root node to load from your YAML file (typically `development`, `production`, etc.)
 
 ### ActiveRecord
 
-Add `gem 'activerecord'` in your `Gemfile`.
+#### Setup
 
-Create a new migration to add the config table: _(FIXME: add a rake task for this)_
-
+- Add `gem 'activerecord'` in your `Gemfile`.
+- Create a new migration to add the config table: _(FIXME: add a rake task for this)_
 ```ruby
 class CreateConfigValues < ActiveRecord::Migration
   def change
@@ -83,19 +87,20 @@ class CreateConfigValues < ActiveRecord::Migration
 end
 ```
 
-### Redis
+#### Parameters
 
-Add `gem 'redis'` in your `Gemfile`.
-
-Not yet implemented.
+- `:type => :active_record`
+- `:model`: name of the ActiveRecord model (default: `ConfigValue`)
+- `:config_file`: path to the database settings (default: `config/database.yml`)
+- `:environment`: environment to load (typically `development`, `production`, etc.)
 
 ## Reserved words
 
 /!\ You should not use these names as configuration keys:
 
-- `to_hash`: it's a helper which returns the configuration as a hash
+- `to_hash`: returns the configuration as a hash
 - `inspect`: outputs sub-values as a hash
-- `get_or_default`: it's a helper which returns the value if it exists or creates it otherwise (usage: `get_or_default(key, default_value)`)
+- `get_or_default`: returns the value if it exists or creates it otherwise (usage: `get_or_default(key, default_value)`)
 - `method_missing`: used internally
 - everything which starts with `__` (double underscore): used internally
 
