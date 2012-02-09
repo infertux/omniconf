@@ -6,7 +6,7 @@ module Omniconf
       def initialize id, params
         @source_id = id
         defaults = {
-          :model_name => :ConfigValue
+          :model => 'ConfigValue'
         }
         defaults.merge!({
           :environment => Rails.env,
@@ -24,7 +24,7 @@ module Omniconf
         begin
           records = @model.all
         rescue ::ActiveRecord::StatementInvalid => e
-          Omniconf.logger.warn "Could not load #{@params[:model_name]} model, ignoring this configuration source."
+          Omniconf.logger.warn "Could not load #{@params[:model]} model, ignoring this configuration source."
           return
         end
 
@@ -54,7 +54,7 @@ module Omniconf
 
       def setup
         # define the ActiveRecord model if missing
-        unless Object.const_defined? @params[:model_name]
+        unless Object.const_defined? @params[:model]
           unless ::ActiveRecord::Base.connected?
             ::ActiveRecord::Base.configurations = YAML::load(IO.read(@params[:config_file]))
             ::ActiveRecord::Base.establish_connection(@params[:environment])
@@ -65,10 +65,10 @@ module Omniconf
             serialize :value
           end
 
-          Object.const_set @params[:model_name], klass
+          Object.const_set @params[:model], klass
         end
 
-        @model ||= @params[:model_name].to_s.constantize
+        @model ||= @params[:model].constantize
       end
     end
   end

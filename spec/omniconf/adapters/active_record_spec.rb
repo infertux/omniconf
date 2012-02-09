@@ -4,7 +4,7 @@ require 'omniconf/adapters/active_record'
 describe Omniconf::Adapter::ActiveRecord do
   def load_configuration
     @adapter = Omniconf::Adapter::ActiveRecord.new(:active_record, {
-      :model_name => :ConfigValue,
+      :model => 'ConfigValue',
       :environment => 'test',
       :config_file => File.expand_path(
         '../../../fixtures/omniconf/adapters/active_record/config/database.yml',

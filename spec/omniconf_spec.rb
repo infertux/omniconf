@@ -30,7 +30,7 @@ describe Omniconf do
           },
           :database => {
             :type => :active_record,
-            :model_name => :ConfigValue,
+            :model => 'ConfigValue',
             :environment => 'test',
             :config_file => File.expand_path(
               '../fixtures/omniconf/adapters/active_record/config/database.yml',
