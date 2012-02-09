@@ -4,8 +4,10 @@ A _RubyGem_ that provides an application-agnostic configuration merger.
 
 # Setup
 
-Configure and load desired back-ends by creating a new initializer `config/initializers/omniconf.rb`:
+Configure and load desired back-ends by creating a new initializer:
 
+- With a Rails application, just run `rails g omniconf:install`.
+- Without a Rails application, you need to create a file along these lines (see below):
 ```ruby
 Omniconf.setup do |config|
   config.sources = {
@@ -74,7 +76,8 @@ _Note: read-only._
 #### Setup
 
 - Add `gem 'activerecord'` in your `Gemfile`.
-- Create a new migration to add the config table: _(FIXME: add a rake task for this)_
+- With a Rails application, `rails g omniconf:install` has already created a migration for you.
+- Without a Rails application, create a new migration to add the config table:
 ```ruby
 class CreateConfigValues < ActiveRecord::Migration
   def change
