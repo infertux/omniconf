@@ -1,3 +1,4 @@
+require 'yaml'
 require 'omniconf/adapters/read_only'
 
 module Omniconf
