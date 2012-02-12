@@ -22,11 +22,10 @@ module Omniconf
     end
 
     def logger
-      unless @logger
-        @logger = Logger.new(STDOUT)
-        @logger.level = @settings.logger_level if @settings
-        @logger.level = Logger::INFO if @logger.level.nil?
-      end
+      return @logger ||= Rails.logger if defined? Rails
+
+      @logger ||= Logger.new(STDOUT)
+      @logger.level = @settings.logger_level || Logger::INFO
       @logger
     end
 
