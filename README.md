@@ -36,10 +36,12 @@ $ rails c
  => 123
 > Omniconf.configuration.api.username # it works with nested values too
  => "root"
-> Omniconf.configuration.api # outputs a hash if nested
+> Omniconf.configuration.api # returns a hash if nested
  => {"username"=>"root"}
+> Omniconf.configuration.non_existant # returns nil
+ => nil
 > Omniconf.configuration.non_existant.config_value # raises an exception
- => Omniconf::UnknownConfigurationValue: cannot get a configuration value with no parent
+ => NoMethodError: undefined method `config_value' for nil:NilClass
 ```
 
 ## Setting values
@@ -52,7 +54,7 @@ $ rails c
 > Omniconf.configuration.api.username = "admin" # it works with nested values too
  => "admin"
 > Omniconf.configuration.brand_new_value = "whatever" # raises an exception because you've got to tell which back-end will store the new value
- => Omniconf::UnknownConfigurationValue: cannot set a configuration value with no parent
+ => Omniconf::UnknownConfigurationValue: cannot set a configuration value with no parents
 > Omniconf.sources[:database].brand_new_value = "whatever" # adds a new record in ConfigValue model
  => "whatever"
 ```
