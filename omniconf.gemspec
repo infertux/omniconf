@@ -5,9 +5,9 @@ require "omniconf/version"
 Gem::Specification.new do |s|
   s.name        = "omniconf"
   s.version     = Omniconf::VERSION
-  s.authors     = ["Cedric Felizard"]
-  s.email       = ["cedric@picklive.com"]
-  s.homepage    = "https://github.com/Picklive/omniconf"
+  s.authors     = ["Cédric Félizard"]
+  s.email       = ["cedric@felizard.fr"]
+  s.homepage    = "https://github.com/infertux/omniconf"
   s.summary     = %q{Merge multiple configuration sources into one.}
   s.description = %q{Merge configurations from multiple back-ends for easy use in a complex application.}
 
@@ -19,7 +19,7 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
   s.add_development_dependency 'rake', '~> 0.9'
-  s.add_development_dependency 'rspec', '~> 2.8'
+  s.add_development_dependency 'rspec', '~> 2.10'
   s.add_development_dependency 'sqlite3', '~> 1.3'
   s.add_development_dependency 'activerecord', '~> 3.2'
 end
