@@ -43,7 +43,7 @@ module Omniconf
         params[:adapter].load_configuration!
         Omniconf.logger.info "Loaded configuration from #{source_id.inspect} source"
       end
-      Omniconf.logger.info "Global configuration: #{configuration.inspect}"
+      Omniconf.logger.debug "Global configuration: #{configuration.inspect}"
     end
 
     alias_method :reload_configuration!, :load_configuration!
