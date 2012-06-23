@@ -27,13 +27,11 @@ module Omniconf
 
     def method_missing(method, *args)
       raise NoMethodError, "undefined method `#{method}' for #{self}" \
-        if method.to_s[0..1] == '__' # will save hours tracking down heisenbugs
+        if method.to_s.start_with? '__' # will save hours tracking down heisenbugs
 
       len = args.length
-      if new_key = method.to_s.chomp!('=') # write
-        if len == 1
-          key, value = new_key, args[0]
-        else
+      if key = method.to_s.chomp!('=') # write
+        unless len == 1 # args[0] is the value
           raise ArgumentError, "wrong number of arguments (#{len} for 1)"
         end
 
@@ -45,12 +43,12 @@ module Omniconf
             parent = parent[:object].__parent
           end
 
-          @__adapter.set_value(full_key, value) # notify the adapter
+          @__adapter.set_value(full_key, args[0]) # notify the adapter
         else
           Omniconf.logger.warn "No adapter to notify"
         end
 
-        @__table[key] = value # update our internal config hash
+        @__table[key] = args[0] # update our internal config hash
 
         if @__adapter.is_a? Omniconf::Adapter::Base
           # we need to merge the global config
@@ -63,21 +61,6 @@ module Omniconf
         if value.is_a?(Hash)
           Configuration.new(@__adapter, value, {:root => key, :object => self})
         else
-          unless value
-            # add a catch-all exception
-            # (more descriptive than "undefined method `xxx' for nil:NilClass")
-            class << value
-              def method_missing method, *args
-                if method == :to_str
-                  # need to raise NoMethodError here for Ruby 1.9.2 compatibility
-                  raise NoMethodError, "undefined method `#{method}' for #{self}"
-                else
-                  raise UnknownConfigurationValue,
-                        "cannot get a configuration value with no parent"
-                end
-              end
-            end
-          end
           value
         end
 

@@ -86,6 +86,17 @@ describe Omniconf::Adapter::Yaml do
       config.yaml_key.should == 'yaml_value_dev'
     end
 
+    it "merges common values" do
+      %w(test development).each do |env|
+        load_configuration env
+        config.common_key.should == 'common_value'
+      end
+    end
+
+    it "overrides common values" do
+      config.override_key.should == 'override_value'
+    end
+
     it "keeps value types" do
       config.some_integer.should == 1337
       config.some_float.should == 3.14

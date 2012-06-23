@@ -43,13 +43,14 @@ module Omniconf
         params[:adapter].load_configuration!
         Omniconf.logger.info "Loaded configuration from #{source_id.inspect} source"
       end
+      Omniconf.logger.info "Global configuration: #{configuration.inspect}"
     end
 
     alias_method :reload_configuration!, :load_configuration!
 
     def merge_configuration! source_id
-      Omniconf.logger.debug "Merging from #{source_id.inspect} source"
       source_config = Omniconf.sources[source_id].to_hash
+      Omniconf.logger.debug "Merging #{source_config.inspect} from #{source_id.inspect} source"
       global_config = Omniconf.configuration.to_hash
       global_config.recursive_merge!(source_config) do |key, old_val, new_val|
         Omniconf.logger.warn \
@@ -74,7 +75,7 @@ module Omniconf
         end
       end
       raise UnknownConfigurationValue,
-            "cannot set a configuration value with no parent" unless found
+            "cannot set a configuration value with no parents" unless found
     end
 
     private
@@ -82,12 +83,16 @@ module Omniconf
       return unless @settings.sources
       @settings.sources.each do |source_id, params|
         adapter_file = params[:type].to_s
+
         require "omniconf/adapters/#{adapter_file}"
+
         adapter_class = adapter_file.split('_').map {|w| w.capitalize}.join
         raise unless params[:adapter].nil?
+
         params[:adapter] = Omniconf::Adapter.class_eval do
           const_get(adapter_class).new(source_id, params)
         end
+
         Omniconf.logger.debug "Registered #{adapter_class}::#{source_id} source"
       end
     end

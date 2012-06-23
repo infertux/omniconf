@@ -1,8 +1,10 @@
 module Omniconf
   class BlankSlate
-    instance_methods.each do |method|
-      undef_method method unless method =~ /^__/ or
-        [:inspect, :instance_of?, :object_id, :should].include? method.to_sym
+    # do not undef these methods
+    WHITELIST = %w(inspect object_id)
+
+    instance_methods.map(&:to_s).each do |method|
+      undef_method method unless method.start_with?('__') || WHITELIST.include?(method)
     end
   end
 end

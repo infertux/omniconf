@@ -17,6 +17,11 @@ describe Omniconf::Configuration do
     }
   end
 
+  it "is blank slated" do
+    # check we don't have the 40-ish methods inherited from the Object class
+    Omniconf::Configuration.new(nil).hash.should be_nil
+  end
+
   describe "#initialize" do
     it "takes a hash as argument" do
       expect { Omniconf::Configuration.new nil, hash }.to_not raise_error

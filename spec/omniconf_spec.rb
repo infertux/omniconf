@@ -53,10 +53,6 @@ describe Omniconf do
         Omniconf.configuration
       end
 
-      it "returns an instance of Omniconf::Configuration" do
-        config.should be_an_instance_of Omniconf::Configuration
-      end
-
       describe "getting values" do
         it "loads and merges all configurations" do
           config.yaml_key.should == 'yaml_value'
@@ -89,7 +85,7 @@ describe Omniconf do
         end
 
         it "fails to create a new value with no sources" do
-          # How the hell would I know where to store it?!
+          # since we cannot know in which source to save it
           config.no.should be_nil
           expect {
             config.no = 'whatever'
@@ -102,7 +98,7 @@ describe Omniconf do
 
           expect {
             Omniconf.sources[:database].no.no = 'new_ar_value'
-          }.to raise_error Omniconf::UnknownConfigurationValue
+          }.to raise_error NoMethodError
         end
       end
     end

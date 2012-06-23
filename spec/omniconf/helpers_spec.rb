@@ -3,7 +3,7 @@ require 'omniconf/helpers'
 
 describe Hash do
   describe "#recursive_stringify_keys!" do
-    it "stringify hash's keys recursively" do
+    it "stringify hash keys recursively" do
       hash = {:a => 1, :b => {:aa => {:aaa => 'AAA', 'bbb' => nil}}}
       hash.recursive_stringify_keys!
       hash.should == {'a' => 1, 'b' => {'aa' => {'aaa' => 'AAA', 'bbb' => nil}}}

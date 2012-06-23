@@ -1,10 +1,18 @@
+common: &common
+  common_key: common_value
+  override_key: override_me
+
 test:
+  <<: *common
   yaml_key: yaml_value
-  nested:
-    yaml_key: nested_yaml_value
-    overridden: by_yaml
+  override_key: override_value
   some_integer: 1337
   some_float: 3.14
   some_array: [1, 2, 3]
+  nested:
+    yaml_key: nested_yaml_value
+
 development:
+  <<: *common
   yaml_key: yaml_value_dev
+
