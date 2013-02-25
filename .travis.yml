@@ -1,5 +1,6 @@
 language: ruby
 rvm:
+  - ree
   - 1.9.2
   - 1.9.3
-  - ree
+  - 2.0.0
