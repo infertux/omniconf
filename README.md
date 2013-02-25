@@ -1,4 +1,4 @@
-# Omniconf [![Build Status](https://secure.travis-ci.org/Picklive/omniconf.png)](http://travis-ci.org/#!/Picklive/omniconf)
+# Omniconf [![Build Status](https://travis-ci.org/infertux/omniconf.png?branch=master)](https://travis-ci.org/infertux/omniconf)
 
 A _RubyGem_ that provides an application-agnostic configuration merger.
 
@@ -114,8 +114,6 @@ end
 # Testing
 
 `rake`
-
-Tested against _ree_, _ruby-1.9.2_ and _ruby-1.9.3_ thanks to [Travis CI](http://travis-ci.org/#!/Picklive/omniconf "It rocks!").
 
 # License
 
